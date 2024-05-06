@@ -1,7 +1,3 @@
-
-
-
-
 import { fabric } from 'fabric';
 
 const canvas = new fabric.Canvas('c');
@@ -10,6 +6,17 @@ let designImage = null; // Store reference to the design image globally
 const layerImages = {}; 
 let currentSelectedImage;
 let selectedLayer = 0;
+const blendModes = {
+    'normal': 'source-over',
+    'multiply': 'multiply',
+    'screen': 'screen',
+    'overlay': 'overlay',
+    'darken': 'darken',
+    'lighten': 'lighten',
+    'color-dodge': 'color-dodge',
+    'color-burn': 'color-burn',
+    // Add more blend modes as needed
+};
 
 // Function to update design image based on clipRect changes
 function updateImageForClipRect() {
@@ -103,6 +110,46 @@ document.getElementById('main-upload').addEventListener('change', (e) => handleI
 document.getElementById('color-upload').addEventListener('change', (e) => handleImageUpload(e, 2));
 document.getElementById('design-upload').addEventListener('change', (e) => handleImageUpload(e, 3));
 
+
+// Function to render layers with blend mode applied to currentSelectedImage and its below layer
+function renderLayersWithBlendMode() {
+    canvas.clear(); // Clear canvas before rendering
+
+    // Check if the current layer and the layer below it exist
+    let currentLayer = layerImages[selectedLayer];
+    let belowLayer = null;
+
+    // Find the closest available layer below the current layer
+    for (let i = selectedLayer - 1; i >= 0; i--) {
+        if (layerImages[i]) {
+            belowLayer = layerImages[i];
+            break;
+        }
+    }
+
+    // Set blend mode to 'normal' if either layer is missing
+    const blendMode = document.getElementById('blend-mode-select').value;
+    console.log('blendModes[blendMode] :>> ', blendModes[blendMode]);
+
+    // Set the blend mode for the current layer and the layer below it
+    if (currentLayer && belowLayer) {
+        currentLayer.globalCompositeOperation = blendModes[blendMode];
+        belowLayer.globalCompositeOperation = blendModes[blendMode];
+    }
+
+    // Add all layers to the canvas
+    for (let i = 0; i < 4; i++) {
+        if (layerImages[i]) {
+            canvas.add(layerImages[i]);
+        }
+    }
+
+    canvas.renderAll();
+}
+
+
+
+
 document.getElementById('add-clip-area').addEventListener('click', function () {
     if (!clipRect) {
         clipRect = new fabric.Rect({
@@ -193,6 +240,10 @@ document.getElementById('hue-slider').addEventListener('input', function() {
     }
 });
 
+
+
+// Event listener for blend mode selection
+document.getElementById('blend-mode-select').addEventListener('change', renderLayersWithBlendMode);
 
 
 
