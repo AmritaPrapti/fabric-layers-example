@@ -109,6 +109,8 @@ document.getElementById('bg-upload').addEventListener('change', (e) => handleIma
 document.getElementById('main-upload').addEventListener('change', (e) => handleImageUpload(e, 1));
 document.getElementById('color-upload').addEventListener('change', (e) => handleImageUpload(e, 2));
 document.getElementById('design-upload').addEventListener('change', (e) => handleImageUpload(e, 3));
+document.getElementById('shadow-upload').addEventListener('change', (e) => handleImageUpload(e, 4));
+document.getElementById('highlight-upload').addEventListener('change', (e) => handleImageUpload(e, 5));
 
 
 // Function to render layers with blend mode applied to currentSelectedImage and its below layer
@@ -195,6 +197,16 @@ document.getElementById('layer-select').addEventListener('change', function() {
 });
 
 
+// Event listener for filter sliders
+
+document.getElementById('opacity-slider').addEventListener('input', function() {
+    if (currentSelectedImage) {
+        currentSelectedImage.set({ opacity: parseFloat(this.value) });
+        canvas.renderAll();
+    }
+});
+
+
 document.getElementById('brightness-slider').addEventListener('input', function() {
     if (currentSelectedImage) {
         const brightnessFilter = new fabric.Image.filters.Brightness({
@@ -203,6 +215,7 @@ document.getElementById('brightness-slider').addEventListener('input', function(
         currentSelectedImage.filters[0] = brightnessFilter; // Assuming brightness is the first filter
         currentSelectedImage.applyFilters();
         canvas.renderAll();
+        // console.log('layerImages :>> ', layerImages);
     }
 });
 

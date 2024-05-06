@@ -20,6 +20,8 @@
     <input type="file" id="main-upload" accept="image/*"><label for="main-upload">Upload Main Image</label><br> <br>
     <input type="file" id="color-upload" accept="image/*"><label for="color-upload">Upload Color Layer</label><br> <br>
     <input type="file" id="design-upload" accept="image/*"><label for="design-upload">Upload Design</label><br> <br>
+    <input type="file" id="shadow-upload" accept="image/*"><label for="design-upload">Upload Shadow Layer</label><br> <br>
+    <input type="file" id="highlight-upload" accept="image/*"><label for="design-upload">Upload Highlight Layer</label><br> <br>
     <button id="add-clip-area">Add Clip Area</button>
 
     <br>
@@ -28,13 +30,16 @@
     <p>Select layer for applying filters and blend mode</p>
 
     <div>
+        <label for="layer-select">Select Layer:</label>
         <select id="layer-select">
             <option value="0">Background Layer</option>
             <option value="1">Main Image Layer</option>
             <option value="2">Color Layer</option>
             <option value="3">Design Layer</option>
+            <option value="4">Shadow Layer</option>
+            <option value="5">Highlight Layer</option>
         </select>
-
+        <label for="blend-mode-select">Select Blend Mode:</label>
         <select id="blend-mode-select">
             <option value="source-over">normal</option>
             <option value="multiply">multiply</option>
@@ -48,10 +53,14 @@
 
     </div>
 
-    <br>
-    <br>
+    <p>Set filter for selected layer:</p>
 
     <div>
+        <input type="range" id="opacity-slider" min="0" max="1" step="0.01" value="1">
+        <label for="opacity-slider">
+            Opacity
+        </label>
+        <br>
         <input type="range" id="brightness-slider" min="-1" max="1" step="0.01" value="0">
         <label for="brightness-slider">
             Brightness
@@ -71,6 +80,7 @@
         <label for="hue-slider">
             Hue
         </label>
+        
     </div>
 
 
