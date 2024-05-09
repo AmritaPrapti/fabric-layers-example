@@ -26,7 +26,7 @@ function updateImageForClipRect() {
     const clipRectHeight = clipRect.height * clipRect.scaleY;
     const clipRectRatio = clipRectWidth / clipRectHeight;
     let scale;
-
+    let strokeWidth = 1;
 
     console.log('clipRectWidth :>> ', clipRectWidth);
 
@@ -43,22 +43,25 @@ function updateImageForClipRect() {
     }
 
     designImage.set({
-        left: clipRect.left + 1,
-        top: clipRect.top + 1,
+        left: clipRect.left,
+        top: clipRect.top,
         scaleX: scale,
         scaleY: scale,
+        strokeWidth: 0,
         clipPath: new fabric.Rect({
             originX: 'left',
             originY: 'top',
-            left: clipRect.left + 1, // Position relative to the image
+            left: clipRect.left + 1 , // Position relative to the image
             top: clipRect.top + 1, // Position relative to the image
             width: clipRectWidth , // Match clipRect dimensions
             height: clipRectHeight, // Match clipRect dimensions
             fill: 'transparent', // No fill for clipping path
             stroke: 'black', // Stroke color for clipping path
-            absolutePositioned: true
+            absolutePositioned: true,
+            strokeWidth: strokeWidth, // Stroke width for clipping path
         })
     });
+    console.log('de :>> ', designImage);
     clipRect.set({ fill: 'transparent', stroke: 'black', strokeWidth: 1, strokeDashArray: [5, 5]});
     canvas.renderAll();
 }
