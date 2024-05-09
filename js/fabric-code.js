@@ -20,15 +20,21 @@ const blendModes = {
 
 // Function to update design image based on clipRect changes
 function updateImageForClipRect() {
+    
+
+    const clipRectWidth = clipRect.width * clipRect.scaleX;
+    const clipRectHeight = clipRect.height * clipRect.scaleY;
+    const clipRectRatio = clipRectWidth / clipRectHeight;
+    let scale;
+
+
+    console.log('clipRectWidth :>> ', clipRectWidth);
+
     if (!designImage || !clipRect) {
         return; // Exit if there's no image or clipRect
     }
 
-    const clipRectWidth = clipRect.width * clipRect.scaleX;
-    const clipRectHeight = clipRect.height * clipRect.scaleY;
     const imageRatio = designImage.width / designImage.height;
-    const clipRectRatio = clipRectWidth / clipRectHeight;
-    let scale;
 
     if (imageRatio > clipRectRatio) {
         scale = clipRectWidth / designImage.width;  // Fit to width
@@ -44,10 +50,10 @@ function updateImageForClipRect() {
         clipPath: new fabric.Rect({
             originX: 'left',
             originY: 'top',
-            left: 0, // Position relative to the image
-            top: 0, // Position relative to the image
-            width: clipRectWidth / scale, // Match clipRect dimensions
-            height: clipRectHeight / scale, // Match clipRect dimensions
+            left: clipRect.left, // Position relative to the image
+            top: clipRect.top, // Position relative to the image
+            width: clipRectWidth , // Match clipRect dimensions
+            height: clipRectHeight, // Match clipRect dimensions
             fill: 'transparent', // No fill for clipping path
             absolutePositioned: true
         })
@@ -172,7 +178,12 @@ document.getElementById('add-clip-area').addEventListener('click', function () {
         canvas.add(clipRect);
         canvas.setActiveObject(clipRect);
         canvas.renderAll(); // Force the canvas to re-render with the new object
-        clipRect.on('modified', updateImageForClipRect); // Attach event listener to update image on clipRect changes
+        // Attach event listener to update image on clipRect changes
+          // Attach the modified event listener with a console log for debugging
+          clipRect.on('modified', function() {
+            console.log('ClipRect modified');
+            updateImageForClipRect();
+        });
     } else {
         // If the clipRect already exists, ensure it's selectable and draggable
         clipRect.set({
