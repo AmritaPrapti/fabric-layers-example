@@ -58,7 +58,7 @@ function updateImageForClipRect() {
             absolutePositioned: true
         })
     });
-    clipRect.set({ fill: 'transparent' });
+    // clipRect.set({ fill: 'transparent' });
     canvas.renderAll();
 }
 
